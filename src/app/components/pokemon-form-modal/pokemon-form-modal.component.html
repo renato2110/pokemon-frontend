@@ -1,0 +1,110 @@
+<div class="modal-container">
+  <div class="modal-content">
+    <div class="modal-title">
+      <h2>Editar Pokémon</h2>
+      <img width="30" alt="Pokeball" src="../assets/pokeball.png" />
+    </div>
+    <form [formGroup]="pokemonForm" (ngSubmit)="onSubmit()">
+      <div class="input-value">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" formControlName="name" />
+        <div
+          class="input-message"
+          *ngIf="pokemonForm.get('name')?.hasError('required')"
+        >
+          Campo requerido
+        </div>
+      </div>
+
+      <div class="input-value">
+        <label for="type">Tipo:</label>
+        <select id="type" formControlName="type">
+          <option *ngFor="let type of pokemonTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+        <div
+          class="input-message"
+          *ngIf="pokemonForm.get('type')?.hasError('required')"
+        >
+          Campo requerido
+        </div>
+      </div>
+
+      <div class="input-value">
+        <label for="life">Vida:</label>
+        <input type="number" id="life" formControlName="life" />
+        <div
+          class="input-message"
+          *ngIf="pokemonForm.get('life')?.hasError('required')"
+        >
+          Campo requerido
+        </div>
+        <div
+          class="input-message"
+          *ngIf="
+            pokemonForm.get('life')?.hasError('min') ||
+            pokemonForm.get('life')?.hasError('max')
+          "
+        >
+          La vida debe estar entre 1 y 9999
+        </div>
+      </div>
+
+      <div formArrayName="attacks" class="attacks">
+        <div class="attacks-title">
+          <h3>
+            Ataques ({{ attacks.controls.length }})
+            <i
+              *ngIf="attacks.controls.length < 4"
+              class="fas fa-plus"
+              (click)="addAttack()"
+            ></i>
+          </h3>
+        </div>
+        <div
+          *ngFor="let attack of attacks.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <div class="input-value">
+            <span class="index">{{ i + 1 }}</span>
+            <label for="type{{ i }}">Tipo de Ataque:</label>
+            <select id="type{{ i }}" formControlName="type">
+              <option *ngFor="let type of pokemonTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+            <div
+              class="input-message"
+              *ngIf="attack.get('type')?.hasError('required')"
+            >
+              Campo requerido
+            </div>
+          </div>
+          <div class="input-value">
+            <label for="power{{ i }}">Poder:</label>
+            <input type="number" id="power{{ i }}" formControlName="power" />
+            <div
+              class="input-message"
+              *ngIf="attack.get('power')?.hasError('required')"
+            >
+              Campo requerido
+            </div>
+            <div
+              class="input-message"
+              *ngIf="
+                attack.get('power')?.hasError('min') ||
+                attack.get('power')?.hasError('max')
+              "
+            >
+              El poder debe estar entre 0 y 100
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button (click)="closeModal()">Cancelar</button>
+      <button type="submit" [disabled]="!pokemonForm.valid">Guardar</button>
+    </form>
+  </div>
+</div>

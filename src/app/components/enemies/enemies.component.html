@@ -1,0 +1,19 @@
+<div class="enemy-card">
+  <div class="id">{{ enemy.id }}</div>
+  <div class="enemy-card-values">
+    <span class="label">Nombre:</span>
+    <span>{{ enemy.name }}</span>
+  </div>
+  <div class="enemy-card-values">
+    <span class="label">Tipo:</span>
+    <app-type [type]="enemy.type"></app-type>
+  </div>
+  <div class="enemy-card-values">
+    <span class="label">Vida:</span>
+    <span class="life">{{ enemy.life }} pts</span>
+  </div>
+  <div class="enemy-card-values">
+    <span class="label">Debilidad:</span>
+    <app-type [type]="getAdvantage()"></app-type>
+  </div>
+</div>

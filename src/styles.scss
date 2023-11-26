@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+body {
+  background-image: url("../src/assets/background.jpg");
+  background-repeat: no-repeat;
+  margin: 0;
+  font-family: "Flexo-Medium", arial, sans-serif;
+
+  button {
+    width: 9rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    border: 2px solid black;
+    background-color: #fc0;
+
+    &:hover {
+      background-color: rgb(255, 179, 0);
+    }
+  }
+  
+  select, input {
+    height: 1.5rem;
+    margin-right: 2rem;
+    border-radius: 0.5rem;
+    border: 2px solid;
+    background-color: white;
+    font-weight: bold;
+    padding: 0 0.5rem;
+  }
+}

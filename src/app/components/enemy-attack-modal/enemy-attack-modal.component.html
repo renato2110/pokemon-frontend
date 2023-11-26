@@ -1,0 +1,47 @@
+<!-- enemy-attack-modal.component.html -->
+
+<div class="modal-container">
+  <div class="modal-content">
+    <div class="modal-title">
+      <h2>Ataque Pokémon</h2>
+      <img width="30" alt="Pokeball" src="../assets/pokeball.png" />
+    </div>
+    <div class="option">
+      <label for="enemySelector">Selecciona un enemigo:</label>
+      <select
+        id="enemySelector"
+        [(ngModel)]="selectedEnemyIndex"
+        name="enemySelector"
+        required
+      >
+        <option *ngFor="let enemy of enemies;" [value]="enemy.id">
+          {{ enemy.id }}
+        </option>
+      </select>
+      <app-enemies
+        *ngIf="selectedEnemyIndex > 0"
+        [enemy]="getEnemy(selectedEnemyIndex)"
+      ></app-enemies>
+    </div>
+    <div class="option">
+      <label for="attackSelector">Selecciona un ataque:</label>
+      <select
+        id="attackSelector"
+        [(ngModel)]="selectedAttackIndex"
+        name="attackSelector"
+        required
+      >
+        <option *ngFor="let attack of attacks; let i = index" [value]="i + 1">
+          {{ i + 1 }}
+        </option>
+      </select>
+      <app-attacks
+        *ngIf="selectedAttackIndex > 0"
+        [attack]="attacks[selectedAttackIndex-1]"
+        [id]="selectedAttackIndex"
+      ></app-attacks>
+    </div>
+    <button (click)="closeModal()">Cancelar</button>
+    <button [disabled]="!selectedEnemyIndex" (click)="attack()">Atacar</button>
+  </div>
+</div>

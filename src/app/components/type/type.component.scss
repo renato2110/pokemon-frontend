@@ -1,0 +1,23 @@
+.type {
+  border: 2px solid black;
+  border-radius: 1rem;
+  color: white;
+  font-weight: bold;
+  padding: 0.125rem 0.75rem;
+
+  &.fuego {
+    background-color: #fe4422;
+  }
+
+  &.planta {
+    background-color: #74c753;
+  }
+
+  &.normal {
+    background-color: #b2afa2;
+  }
+
+  &.agua {
+    background-color: #3194f7;
+  }
+}
