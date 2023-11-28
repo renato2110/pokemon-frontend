@@ -14,17 +14,16 @@ const httpOptions = {
 })
 export class AppComponent implements OnInit {
   id: number = 0;
-  title = 'pokemon-frontend';
   name: string = 'Sin nombre';
   life: number = 0;
   type: PokemonType = PokemonType.Normal;
-  status: string = 'No disponible';
+  status: string = 'desconectado';
   attacks: PokemonAttack[] = [];
   advantage: string = '';
   disadvantage: string = '';
   showAttackModal: boolean = false;
   showMessageModal: boolean = false;
-  messageBody: string = 'Message'
+  messageBody: string = 'Message';
   showEditModal: boolean = false;
 
   enemies: Pokemon[] = [];
@@ -41,58 +40,86 @@ export class AppComponent implements OnInit {
   refreshData() {
     this.http
       .get<any>('http://localhost:3000/pokemon/info', httpOptions)
-      .subscribe((response) => {
-        this.name = response.data.name;
-        this.life = response.data.life;
-        this.type = response.data.type;
-        this.id = response.data.id;
-        switch (this.type) {
-          case PokemonType.Fire:
-            this.advantage = PokemonType.Grass;
-            this.disadvantage = PokemonType.Water;
-            break;
-          case PokemonType.Water:
-            this.advantage = PokemonType.Fire;
-            this.disadvantage = PokemonType.Grass;
-            break;
-          case PokemonType.Grass:
-            this.advantage = PokemonType.Water;
-            this.disadvantage = PokemonType.Fire;
-            break;
-          default:
-            break;
-        }
+      .subscribe({
+        next: (response) => {
+          this.name = response.data.name;
+          this.life = response.data.life;
+          this.type = response.data.type;
+          this.id = response.data.id;
+          switch (this.type) {
+            case PokemonType.Fire:
+              this.advantage = PokemonType.Grass;
+              this.disadvantage = PokemonType.Water;
+              break;
+            case PokemonType.Water:
+              this.advantage = PokemonType.Fire;
+              this.disadvantage = PokemonType.Grass;
+              break;
+            case PokemonType.Grass:
+              this.advantage = PokemonType.Water;
+              this.disadvantage = PokemonType.Fire;
+              break;
+            default:
+              break;
+          }
 
-        this.status = response.data.status;
-        this.attacks = response.data.attacks;
-      });
+          this.status = response.data.status;
+          this.attacks = response.data.attacks;
 
-    this.http
-      .get<any>('http://localhost:3000/pokemon/enemigos', httpOptions)
-      .subscribe((response) => {
-        this.enemies = response.data;
+          this.http
+            .get<any>('http://localhost:3000/pokemon/enemigos', httpOptions)
+            .subscribe((response) => {
+              this.enemies = response.data;
+            });
+        },
+        error: () => {
+          this.id = 0;
+          this.name = 'Sin nombre';
+          this.life = 0;
+          this.type = PokemonType.Normal;
+          this.status = 'desconectado';
+          this.attacks = [];
+          this.advantage = '';
+          this.disadvantage = '';
+          this.enemies = [];
+
+          this.closeAttackModal();
+          this.closeEditModal();
+        },
       });
   }
 
   joinMatch() {
-    this.openMessageModal('La función de Unir a Partida no está implementada actualmente. Próximamente será agregada.');
+    this.http
+      .post<any>(
+        'http://localhost:3000/pokemon/unirse-a-partida',
+        httpOptions
+      )
+      .subscribe({
+        next: () => this.openMessageModal(`Pokémon agregado a la batalla satisfactoriamente!`),
+        error: (error) => this.openMessageModal(`Pokémon no pudo ser agregado a la batalla!\n ERROR: ${error.error.message}`)
+      });
   }
 
   handleAttack(indexes: number[]) {
-    const enemy = this.enemies.find(enemy => enemy.id === indexes[0]);
+    const enemy = this.enemies.find((enemy) => enemy.id === indexes[0]);
     const attack = this.attacks[indexes[1]];
 
     const body = {
       pokemonId: enemy?.id,
-      attackId: indexes[1]+1
-    }
+      attackId: indexes[1] + 1,
+    };
 
     this.http
-    .post<any>('http://localhost:3000/pokemon/atacar', JSON.stringify(body), httpOptions)
-    .subscribe((response) => {
-      console.log(response);
-      this.openMessageModal(`Ataque de tipo ${attack.type.toUpperCase()} ha sido enviado satisfactoriamente hacia pokemon ${enemy?.name}!`);
-    });
+      .post<any>(
+        'http://localhost:3000/pokemon/atacar',
+        JSON.stringify(body),
+        httpOptions
+      )
+      .subscribe({
+        next: () => this.openMessageModal(`Ataque de tipo ${attack.type.toUpperCase()} ha sido enviado satisfactoriamente hacia pokemon ${enemy?.name}!`),
+        error: (error) => this.openMessageModal(`Ataque de tipo ${attack.type.toUpperCase()} no pudo ser enviado hacia pokemon ${enemy?.name}!\n ERROR: ${error.error.message}`)
+      });
   }
 
   openAttackModal() {
@@ -123,13 +150,20 @@ export class AppComponent implements OnInit {
 
   editPokemon(pokemon: Object) {
     this.http
-    .put<any>('http://localhost:3000/pokemon/iniciar', JSON.stringify(pokemon), httpOptions)
-    .subscribe(() => {
-      this.openMessageModal(`Pokémon ha sido actualizado satisfactoriamente!`);
-    });
+      .put<any>(
+        'http://localhost:3000/pokemon/iniciar',
+        JSON.stringify(pokemon),
+        httpOptions
+      )
+      .subscribe({
+        next: () => this.openMessageModal(`Pokémon ha sido actualizado satisfactoriamente!`),
+        error: (error) => this.openMessageModal(`Pokémon no pudo ser actualizado!\n ERROR: ${error.error.message}`)
+      });
   }
 
   openLogsModal() {
-    this.openMessageModal('La función de Ver Logs no está implementada actualmente. Próximamente será agregada.')
+    this.openMessageModal(
+      'La función de Ver Logs no está implementada actualmente. Próximamente será agregada.'
+    );
   }
 }

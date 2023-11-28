@@ -58,7 +58,7 @@
     <button (click)="joinMatch()" [disabled]="status !== 'disponible'">Unirse a Partida</button>
     <button (click)="openAttackModal()" [disabled]="status !== 'atacando'">Atacar</button>
     <button (click)="openEditModal()" [disabled]="status !== 'disponible'">Editar Pokémon</button>
-    <button (click)="openLogsModal()">Ver Logs</button>
+    <button (click)="openLogsModal()" [disabled]="status === 'desconectado'">Ver Logs</button>
   </div>
 </div>
 
