@@ -6,22 +6,16 @@
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem 1rem;
   background-color: white;
   text-align: left;
+  min-width: 11rem;
 
-  .id {
-    border-radius: 50%;
-    height: 1.25rem;
-    width: 1.25rem;
-    background-color: #f22f2f;
-    position: absolute;
-    margin-top: -1.5rem;
-    margin-left: -1.5rem;
-    color: white;
+  .player {
     font-weight: bold;
-    border: 2px solid black;
+    font-size: 1.25rem;
     text-align: center;
+    margin-bottom: 0.5rem;
   }
 
   &:not(:last-child) {

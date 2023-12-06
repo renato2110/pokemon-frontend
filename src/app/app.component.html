@@ -7,6 +7,7 @@
 </div>
 
 <div class="content" role="main">
+  <h2>Pokémon de {{player}}</h2>
   <h2>Información</h2>
   <div class="info">
     <div class="info-block">
@@ -78,6 +79,7 @@
 
 <app-pokemon-form-modal
   *ngIf="showEditModal"
+  [player]="player"
   (editEvent)="editPokemon($event)"
   (closeModalEvent)="closeEditModal()"
 ></app-pokemon-form-modal>

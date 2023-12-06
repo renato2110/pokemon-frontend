@@ -13,7 +13,7 @@ const httpOptions = {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  id: number = 0;
+  player: string = 'Renato';
   name: string = 'Sin nombre';
   life: number = 0;
   type: PokemonType = PokemonType.Normal;
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
           this.name = response.data.name;
           this.life = response.data.life;
           this.type = response.data.type;
-          this.id = response.data.id;
+          this.player = response.data.player;
           switch (this.type) {
             case PokemonType.Fire:
               this.advantage = PokemonType.Grass;
@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
             });
         },
         error: () => {
-          this.id = 0;
+          this.player = 'Renato';
           this.name = 'Sin nombre';
           this.life = 0;
           this.type = PokemonType.Normal;
@@ -102,11 +102,11 @@ export class AppComponent implements OnInit {
   }
 
   handleAttack(indexes: number[]) {
-    const enemy = this.enemies.find((enemy) => enemy.id === indexes[0]);
+    const enemy = this.enemies[indexes[0]];
     const attack = this.attacks[indexes[1]];
 
     const body = {
-      pokemonId: enemy?.id,
+      targetPlayer: enemy?.player,
       attackId: indexes[1] + 1,
     };
 

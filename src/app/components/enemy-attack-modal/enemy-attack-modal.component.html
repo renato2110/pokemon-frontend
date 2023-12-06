@@ -14,8 +14,8 @@
         name="enemySelector"
         required
       >
-        <option *ngFor="let enemy of enemies;" [value]="enemy.id">
-          {{ enemy.id }}
+        <option *ngFor="let enemy of enemies; let i = index" [value]="i + 1">
+          {{ i + 1 }}
         </option>
       </select>
       <app-enemies

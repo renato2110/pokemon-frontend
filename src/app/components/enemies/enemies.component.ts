@@ -8,7 +8,7 @@ import { Pokemon, PokemonType } from 'src/app/common/models';
 })
 export class EnemiesComponent {
   @Input() enemy: Pokemon = {
-    id: 0,
+    player: 'enemy',
     name: 'No name',
     life: 0,
     type: PokemonType.Normal

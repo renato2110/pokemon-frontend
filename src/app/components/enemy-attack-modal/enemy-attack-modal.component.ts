@@ -17,7 +17,7 @@ export class EnemyAttackModalComponent {
 
   attack() {
     this.attackEvent.emit([
-      Number(this.selectedEnemyIndex),
+      this.selectedEnemyIndex - 1,
       this.selectedAttackIndex - 1,
     ]);
     this.closeModal();
@@ -28,7 +28,6 @@ export class EnemyAttackModalComponent {
   }
 
   getEnemy(id: number) {
-    const enemy = this.enemies.find((enemy) => Number(id) === enemy.id);
-    return enemy ?? this.enemies[0];
+    return this.enemies[id-1];
   }
 }

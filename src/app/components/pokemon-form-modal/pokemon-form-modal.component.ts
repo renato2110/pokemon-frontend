@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { PokemonType } from 'src/app/common/models';
 
@@ -10,12 +10,14 @@ import { PokemonType } from 'src/app/common/models';
 export class PokemonFormModalComponent implements OnInit {
   pokemonForm!: FormGroup;
   pokemonTypes = Object.values(PokemonType);
+  @Input() player: string = '';
   @Output() editEvent = new EventEmitter<object>();
   @Output() closeModalEvent = new EventEmitter<void>();
 
   constructor(private formBuilder: FormBuilder) {
     this.pokemonForm = this.formBuilder.group({
       name: ['', Validators.required],
+      player: [this.player, Validators.required],
       type: ['', Validators.required],
       life: [
         '',
@@ -28,6 +30,7 @@ export class PokemonFormModalComponent implements OnInit {
   ngOnInit() {
     this.pokemonForm = this.formBuilder.group({
       name: ['', Validators.required],
+      player: [this.player, Validators.required],
       type: ['', Validators.required],
       life: ['', [Validators.required, Validators.min(1), Validators.max(9999)]],
       attacks: this.formBuilder.array([this.createAttack()]),
