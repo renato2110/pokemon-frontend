@@ -13,11 +13,11 @@ const httpOptions = {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  player: string = 'Renato';
   name: string = 'Sin nombre';
   life: number = 0;
   type: PokemonType = PokemonType.Normal;
-  status: string = 'desconectado';
+  state: string = 'desconectado';
+  gymState: string = 'desconectado';
   attacks: PokemonAttack[] = [];
   advantage: string = '';
   disadvantage: string = '';
@@ -42,10 +42,11 @@ export class AppComponent implements OnInit {
       .get<any>('http://localhost:3000/pokemon/info', httpOptions)
       .subscribe({
         next: (response) => {
-          this.name = response.data.name;
-          this.life = response.data.life;
-          this.type = response.data.type;
-          this.player = response.data.player;
+          const data = response.data;
+
+          this.name = data.name;
+          this.life = data.life;
+          this.type = data.type;
           switch (this.type) {
             case PokemonType.Fire:
               this.advantage = PokemonType.Grass;
@@ -63,21 +64,17 @@ export class AppComponent implements OnInit {
               break;
           }
 
-          this.status = response.data.status;
-          this.attacks = response.data.attacks;
+          this.state = data.state;
+          this.attacks = data.attacks;
 
-          this.http
-            .get<any>('http://localhost:3000/pokemon/enemigos', httpOptions)
-            .subscribe((response) => {
-              this.enemies = response.data;
-            });
+          this.enemies = data.enemies;
+          this.gymState = data.gymState;
         },
         error: () => {
-          this.player = 'Renato';
           this.name = 'Sin nombre';
           this.life = 0;
           this.type = PokemonType.Normal;
-          this.status = 'desconectado';
+          this.state = 'desconectado';
           this.attacks = [];
           this.advantage = '';
           this.disadvantage = '';
@@ -92,7 +89,7 @@ export class AppComponent implements OnInit {
   joinMatch() {
     this.http
       .post<any>(
-        'http://localhost:3000/pokemon/unirse-a-partida',
+        'http://localhost:3000/pokemon/unirse',
         httpOptions
       )
       .subscribe({

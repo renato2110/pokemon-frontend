@@ -17,17 +17,6 @@
       </div>
 
       <div class="input-value">
-        <label for="name">Jugador:</label>
-        <input type="text" id="player" formControlName="player" />
-        <div
-          class="input-message"
-          *ngIf="pokemonForm.get('player')?.hasError('required')"
-        >
-          Campo requerido
-        </div>
-      </div>
-
-      <div class="input-value">
         <label for="type">Tipo:</label>
         <select id="type" formControlName="type">
           <option *ngFor="let type of pokemonTypes" [value]="type">

@@ -7,7 +7,7 @@
 </div>
 
 <div class="content" role="main">
-  <h2>Pokémon de {{player}}</h2>
+  <h2>Pokémon de Renato</h2>
   <h2>Información</h2>
   <div class="info">
     <div class="info-block">
@@ -23,6 +23,10 @@
         <span class="label">Fortaleza:</span>
         <app-type [type]="advantage"></app-type>
       </div>
+      <div class="attribute" style="margin-top: 2rem;">
+        <span class="label">Gimnnasio:</span>
+        <span class="value">{{ gymState }}</span>
+      </div>
     </div>
     <div class="info-block">
       <div class="attribute">
@@ -31,7 +35,7 @@
       </div>
       <div class="attribute">
         <span class="label">Estado:</span>
-        <span class="value">{{ status }}</span>
+        <span class="value">{{ state }}</span>
       </div>
       <div class="attribute">
         <span class="label">Debilidad:</span>
@@ -56,10 +60,10 @@
   </div>
   <h2>Acciones</h2>
   <div class="actions">
-    <button (click)="joinMatch()" [disabled]="status !== 'disponible'">Unirse a Partida</button>
-    <button (click)="openAttackModal()" [disabled]="status !== 'atacando'">Atacar</button>
-    <button (click)="openEditModal()" [disabled]="status !== 'disponible'">Editar Pokémon</button>
-    <button (click)="openLogsModal()" [disabled]="status === 'desconectado'">Ver Logs</button>
+    <button (click)="joinMatch()" [disabled]="state !== 'DISPONIBLE'">Unirse a Partida</button>
+    <button (click)="openAttackModal()" [disabled]="state !== 'ATACANDO'">Atacar</button>
+    <button (click)="openEditModal()" [disabled]="state !== 'DISPONIBLE'">Editar Pokémon</button>
+    <button (click)="openLogsModal()" [disabled]="state === 'DISPONIBLE'">Ver Logs</button>
   </div>
 </div>
 
@@ -79,7 +83,6 @@
 
 <app-pokemon-form-modal
   *ngIf="showEditModal"
-  [player]="player"
   (editEvent)="editPokemon($event)"
   (closeModalEvent)="closeEditModal()"
 ></app-pokemon-form-modal>
