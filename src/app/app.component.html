@@ -60,9 +60,9 @@
   </div>
   <h2>Acciones</h2>
   <div class="actions">
-    <button (click)="joinMatch()" >Unirse a Partida</button>
+    <button (click)="joinMatch()" [disabled]="gymState !== 'EN_BATALLA' && gymState !== 'TERMINADA'">Unirse a Partida</button>
     <button (click)="openAttackModal()" [disabled]="state !== 'ATACANDO'">Atacar</button>
-    <button (click)="openEditModal()" [disabled]="state !== 'DISPONIBLE'">Editar Pokémon</button>
+    <button (click)="openEditModal()" [disabled]="state !== 'DISPONIBLE' && gymState !== 'TERMINADA'">Editar Pokémon</button>
     <button (click)="openLogsModal()" [disabled]="state === 'DISPONIBLE'">Ver Logs</button>
   </div>
 </div>
