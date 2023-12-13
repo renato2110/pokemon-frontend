@@ -5,6 +5,10 @@
     <span>{{ enemy.name }}</span>
   </div>
   <div class="enemy-card-values">
+    <span class="label">Estado:</span>
+    <span class="label">{{ enemy.state }}</span>
+  </div>
+  <div class="enemy-card-values">
     <span class="label">Tipo:</span>
     <app-type [type]="enemy.type"></app-type>
   </div>

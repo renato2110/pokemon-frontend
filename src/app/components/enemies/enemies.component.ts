@@ -11,7 +11,8 @@ export class EnemiesComponent {
     player: 'enemy',
     name: 'No name',
     life: 0,
-    type: PokemonType.Normal
+    type: PokemonType.Normal,
+    state: ''
   };
 
   getAdvantage() {
