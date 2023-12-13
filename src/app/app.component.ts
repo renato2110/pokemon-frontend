@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Pokemon, PokemonAttack, PokemonType } from './common/models';
 
+// const url = 'https://pokemon-backend-one.vercel.app/pokemon';
+const url = 'http://localhost:3000/pokemon';
+
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -28,68 +31,68 @@ export class AppComponent implements OnInit {
 
   enemies: Pokemon[] = [];
 
-  ngOnInit() {
-    this.refreshData();
-    setInterval(() => {
-      this.refreshData();
-    }, 3000);
+  async ngOnInit() {
+    while (true) {
+      await this.refreshData();
+      await this.delay(3000);
+    }
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  refreshData() {
-    this.http
-      .get<any>('http://localhost:3000/pokemon/info', httpOptions)
-      .subscribe({
-        next: (response) => {
-          const data = response.data;
+  async delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-          this.name = data.name;
-          this.life = data.life;
-          this.type = data.type;
-          switch (this.type) {
-            case PokemonType.Fire:
-              this.advantage = PokemonType.Grass;
-              this.disadvantage = PokemonType.Water;
-              break;
-            case PokemonType.Water:
-              this.advantage = PokemonType.Fire;
-              this.disadvantage = PokemonType.Grass;
-              break;
-            case PokemonType.Grass:
-              this.advantage = PokemonType.Water;
-              this.disadvantage = PokemonType.Fire;
-              break;
-            default:
-              break;
-          }
+  async refreshData() {
+    try {
+      const response = await this.http.get<any>(`${url}/info`, httpOptions).toPromise();
+      const data = response.data;
 
-          this.state = data.state;
-          this.attacks = data.attacks;
+      this.name = data.name;
+      this.life = data.life;
+      this.type = data.type;
+      switch (this.type) {
+        case PokemonType.Fire:
+          this.advantage = PokemonType.Grass;
+          this.disadvantage = PokemonType.Water;
+          break;
+        case PokemonType.Water:
+          this.advantage = PokemonType.Fire;
+          this.disadvantage = PokemonType.Grass;
+          break;
+        case PokemonType.Grass:
+          this.advantage = PokemonType.Water;
+          this.disadvantage = PokemonType.Fire;
+          break;
+        default:
+          break;
+      }
 
-          this.enemies = data.enemies;
-          this.gymState = data.gymState;
-        },
-        error: () => {
-          this.name = 'Sin nombre';
-          this.life = 0;
-          this.type = PokemonType.Normal;
-          this.state = 'desconectado';
-          this.attacks = [];
-          this.advantage = '';
-          this.disadvantage = '';
-          this.enemies = [];
+      this.state = data.state;
+      this.attacks = data.attacks;
 
-          this.closeAttackModal();
-          this.closeEditModal();
-        },
-      });
+      this.enemies = data.enemies;
+      this.gymState = data.gymState;
+    } catch (error) {
+      this.name = 'Sin nombre';
+      this.life = 0;
+      this.type = PokemonType.Normal;
+      this.state = 'desconectado';
+      this.attacks = [];
+      this.advantage = '';
+      this.disadvantage = '';
+      this.enemies = [];
+
+      this.closeAttackModal();
+      this.closeEditModal();
+    }
   }
 
   joinMatch() {
     this.http
       .post<any>(
-        'http://localhost:3000/pokemon/unirse',
+        `${url}/unirse`,
         httpOptions
       )
       .subscribe({
@@ -109,7 +112,7 @@ export class AppComponent implements OnInit {
 
     this.http
       .post<any>(
-        'http://localhost:3000/pokemon/atacar',
+        `${url}/atacar`,
         JSON.stringify(body),
         httpOptions
       )
@@ -148,7 +151,7 @@ export class AppComponent implements OnInit {
   editPokemon(pokemon: Object) {
     this.http
       .put<any>(
-        'http://localhost:3000/pokemon/iniciar',
+        `${url}/iniciar`,
         JSON.stringify(pokemon),
         httpOptions
       )
@@ -162,5 +165,11 @@ export class AppComponent implements OnInit {
     this.openMessageModal(
       'La función de Ver Logs no está implementada actualmente. Próximamente será agregada.'
     );
+  }
+
+  getAvailableEnemies() {
+    return this.enemies.filter(enemy => {
+      enemy.state === 'EN_BATALLA'
+    });
   }
 }
