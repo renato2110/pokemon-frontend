@@ -60,7 +60,7 @@
   </div>
   <h2>Acciones</h2>
   <div class="actions">
-    <button (click)="joinMatch()" [disabled]="gymState !== 'EN_BATALLA' && gymState !== 'TERMINADA'">Unirse a Partida</button>
+    <button (click)="joinMatch()" [disabled]="gymState === 'EN_BATALLA'">Unirse a Partida</button>
     <button (click)="openAttackModal()" [disabled]="state !== 'ATACANDO'">Atacar</button>
     <button (click)="openEditModal()" [disabled]="state !== 'DISPONIBLE' && gymState !== 'TERMINADA'">Editar Pokémon</button>
     <button (click)="openLogsModal()" [disabled]="state === 'DISPONIBLE'">Ver Logs</button>
@@ -69,7 +69,7 @@
 
 <app-enemy-attack-modal
   *ngIf="showAttackModal"
-  [enemies]="getAvailableEnemies()"
+  [enemies]="enemies"
   [attacks]="attacks"
   (attackEvent)="handleAttack($event)"
   (closeModalEvent)="closeAttackModal()"

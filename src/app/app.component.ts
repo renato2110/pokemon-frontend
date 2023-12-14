@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Pokemon, PokemonAttack, PokemonType } from './common/models';
 
-// const url = 'https://pokemon-backend-one.vercel.app/pokemon';
-const url = 'http://localhost:3000/pokemon';
+const url = 'https://pokemon-backend-one.vercel.app/pokemon';
+// const url = 'http://localhost:3000/pokemon';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     while (true) {
       await this.refreshData();
-      await this.delay(3000);
+      await this.delay(1000);
     }
   }
 
@@ -165,11 +165,5 @@ export class AppComponent implements OnInit {
     this.openMessageModal(
       'La función de Ver Logs no está implementada actualmente. Próximamente será agregada.'
     );
-  }
-
-  getAvailableEnemies() {
-    return this.enemies.filter(enemy => {
-      enemy.state === 'EN_BATALLA'
-    });
   }
 }
